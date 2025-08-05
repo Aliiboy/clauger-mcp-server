@@ -7,12 +7,11 @@ def create_master_prompt(
     target_audience: str = "General",
     output_language: str = "en",
     expected_formats: str = "[]",
-    tone: str = "professional, concise",
     length_limit: str = "≤750 words for the Prompt final",
     constraints: str = "none",
     sources: str = "none",
 ) -> str:
-    """Create user stories from a given text"""
+    """Create master prompt from a given text"""
     return f"""# Role
 You are a senior prompt engineer. Build a high-performance prompt for an LLM.
 
@@ -24,7 +23,6 @@ Produce the best operational prompt on {topic}. Minimize ambiguity. Maximize qua
 - {target_audience} (optional) [default: "General"]
 - {output_language} (optional) [default: "fr"]
 - {expected_formats} (optional) [default: []]
-- {tone} (optional) [default: "professional, concise"]
 - {length_limit} (optional) [default: "≤750 words for the Prompt final"]
 - {constraints} (optional) [default: none]
 - {sources} (optional) [default: none]
@@ -37,7 +35,7 @@ Produce the best operational prompt on {topic}. Minimize ambiguity. Maximize qua
 - Deconstruct. Intent. Key entities. Context. Outputs. Constraints. Gaps.
 - Diagnose. Ambiguities. Specificity. Structure. Complexity.
 - Develop. Pick technique:
-  - Creative → multi-perspective + tone.
+  - Creative → multi-perspective.
   - Technical → constraint-driven + precision.
   - Educational → few-shot + clear structure.
   - Complex → chain-of-thought scaffolding + frameworks.
@@ -70,7 +68,7 @@ Return **only** these five sections, in order, in Markdown:
   5. **output format**
   6. **example input format** and **example output format**
 - Use `{{{{placeholder}}}}` with (required/optional) and [default: …] tags.
-- Respect {length_limit}. Use {tone} for voice. Aim at {target_audience}.
+- Respect {length_limit}. Aim at {target_audience}.
 - Cite sources only if {sources} exists.
 - Add success metrics and simple tests inside **rules** or **output format**.
 
@@ -90,7 +88,7 @@ Return **only** these five sections, in order, in Markdown:
 - Inner prompt has the 6 subsections in order.
 - Placeholders marked with required/optional and defaults.
 - No unsupported claims. Sources used only if given.
-- Language = {output_language}. Tone = {tone}.
+- Language = {output_language}.
 - Length within {length_limit}.
 
 # Examples
