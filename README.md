@@ -1,8 +1,3 @@
-
-
-
-
-
 # clauger-mcp-server
 Clauger MCP Server avec Claude-code
 

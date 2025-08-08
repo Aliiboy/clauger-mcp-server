@@ -1,112 +1,95 @@
 from server import mcp
 
 
-@mcp.prompt()
-def create_master_prompt(
-    topic: str,
-    target_audience: str = "General",
-    output_language: str = "en",
-    expected_formats: str = "[]",
-    length_limit: str = "≤750 words for the Prompt final",
-    constraints: str = "none",
-    sources: str = "none",
+@mcp.prompt(
+    name="Promptologue",
+    title="Createur de Prompt",
+    description="Permet de créer un prompt optimisé",
+)
+def create_prompt(
+    main_intention: str,
+    target_audience: str,
+    key_entities: str,
+    user_context: str,
+    scope_include: str,
+    scope_exclude: str,
+    output_format: str,
+    constraints: str,
 ) -> str:
-    """Create master prompt from a given text"""
-    return f"""# Role
-You are a senior prompt engineer. Build a high-performance prompt for an LLM.
+    """
+    Génère un prompt structuré pour un LLM à partir de plusieurs entrées utilisateur.
 
-# Goal
-Produce the best operational prompt on {topic}. Minimize ambiguity. Maximize quality, verifiability, reuse.
+    Ce prompt est conçu pour guider un LLM dans la création d'un prompt optimisé
+    en suivant une méthodologie structurée en quatre étapes : Déconstruire,
+    Diagnostiquer, Développer et Livrer.
 
-# Inputs
-- {topic} (required)
-- {target_audience} (optional) [default: "General"]
-- {output_language} (optional) [default: "fr"]
-- {expected_formats} (optional) [default: []]
-- {length_limit} (optional) [default: "≤750 words for the Prompt final"]
-- {constraints} (optional) [default: none]
-- {sources} (optional) [default: none]
+    Args:
+        main_intention: L'objectif principal ou l'intention du prompt à générer.
+        target_audience: Le public cible pour la réponse finale du LLM.
+        key_entities: Les entités, concepts ou mots-clés principaux à inclure.
+        user_context: Le contexte général fourni par l'utilisateur.
+        scope_include: Les éléments ou sujets qui doivent être inclus dans la réponse.
+        scope_exclude: Les éléments ou sujets qui doivent être exclus de la réponse.
+        output_format: Le format de sortie souhaité pour la réponse du LLM.
+        constraints: Les contraintes spécifiques à appliquer au prompt ou à sa sortie.
 
-# One-shot clarification
-- If {topic} is missing, ask 3–7 targeted questions. One numbered list. One turn only. Stop and wait.
-- Else, continue. Do not ask follow-ups later unless user asks.
+    Returns:
+        Une chaîne de caractères formatée contenant le prompt complet et structuré.
+    """
+    return f"""
+    # Contexte
 
-# Method (4D, compact)
-- Deconstruct. Intent. Key entities. Context. Outputs. Constraints. Gaps.
-- Diagnose. Ambiguities. Specificity. Structure. Complexity.
-- Develop. Pick technique:
-  - Creative → multi-perspective.
-  - Technical → constraint-driven + precision.
-  - Educational → few-shot + clear structure.
-  - Complex → chain-of-thought scaffolding + frameworks.
-- Deploy. Draft a plan. Sequence sections. Define required/optional `{{{{placeholders}}}}`. Define tests and success metrics.
+    Nous allons créer le meilleur prompt jamais écrits. Le meilleur prompt comprenant des détails exhaustifs afin d’informer pleinement le LLM sur :
 
-# Guardrails
-- Anti-hallucination. Cite only provided sources as `[Source: …]`. If none, mark uncertainty and suggest verification.
-- Confidentiality. Do not invent sensitive data. Refuse out-of-policy asks.
-- No real actions (purchases, sends) without explicit user order.
-- Traceability. Include success criteria and a checklist.
-- Concision. Short sentences. No fluff. No “etc.”
+    - Ses objectifs
+    - Les domaines d’expertise requis
+    - Le format de la réponse attendus
+    - Les références
+    - Les exemples
+    - La meilleure approche pour attendre l’objectif
 
-# Output language
-- Write all outputs in {output_language}.
+    En nous basant sur ces éléments et les informations suivantes, vous serez en mesure d’écrire le meilleur prompt.
 
-# Output format (outer)
-Return **only** these five sections, in order, in Markdown:
-1) Summary in 3 bullets
-2) Success criteria (list)
-3) Prompt final (copy-paste) — in a ```prompt``` code block
-4) Validation checklist (checkboxes)
-5) Iteration suggestions (optional)
+    # Rôle
 
-# Prompt final requirements (inner)
-- It must contain **exactly** these 6 subsections, in this order:
-  1. **context**
-  2. **objective**
-  3. **steps**
-  4. **rules**
-  5. **output format**
-  6. **example input format** and **example output format**
-- Use `{{{{placeholder}}}}` with (required/optional) and [default: …] tags.
-- Respect {length_limit}. Aim at {target_audience}.
-- Cite sources only if {sources} exists.
-- Add success metrics and simple tests inside **rules** or **output format**.
+    Vous êtes un expert en prompt engineering pour modèles de langage (LLM). Vous maitrisez le processus de conception et de structuration d’un prompt, de sorte qu’il soit efficacement interprété et compris par un modèle d’intelligence artificielle générative.
 
-# Length and style
-- Total words for **Prompt final**: {length_limit}.
-- Sentences short. Action verbs. No emojis.
+    # Etapes
 
-# Success metrics (examples)
-- Clarity score: goals, audience, constraints stated.
-- Verifiability: sources cited only if provided.
-- Determinism: fixed structure and fences respected.
-- Reusability: placeholders complete with defaults.
-- Brevity: stays within {length_limit}.
+    1. **DÉCONSTRUIRE** 
+        1. Extraire l’intention principale, les entités clés et le contexte
+        2. Identifier les exigences de sortie et les contraintes
+        3. Cartographier ce qui est fourni vs. ce qui manque
+    2. **DIAGNOSTIQUER**
+        1. Auditer les lacunes de clarté et les ambiguïtés
+        2. Vérifier la spécificité et l’exhaustivité
+        3. Évaluer les besoins en structure et en complexité
+    3. **DÉVELOPPER**
+        1. Sélectionner les techniques optimales selon le type de demande :
+            - *Créatif* → Approche multi-perspective + mise en avant du ton
+            - *Technique* → Basé sur les contraintes + précision accrue
+            - *Éducatif* → Quelques exemples (few-shot) + structure claire
+            - *Complexe* → Raisonnement en chaîne (chain-of-thought) + cadres systématiques
+        2. Assigner le rôle ou l’expertise IA approprié
+        3. Renforcer le contexte et implémenter une structure logique
+    4. **LIVRER**
+        1. Construire un prompt optimisé
+        2. Formater en fonction de la complexité
+        3. Fournir des consignes de mise en œuvre
 
-# Validation checklist (apply before returning)
-- Structure matches the 5 outer sections.
-- Inner prompt has the 6 subsections in order.
-- Placeholders marked with required/optional and defaults.
-- No unsupported claims. Sources used only if given.
-- Language = {output_language}.
-- Length within {length_limit}.
+    # Entrée utilisateur
 
-# Examples
-- Minimal input (YAML):
-```yaml
-topic: "Write a sales proposal for an analytics SaaS"
-target_audience: "Marketing Directors at mid-market firms in Europe"
-output_language: "en"
-expected_formats: ["Executive summary", "ROI table", "FAQ"]
-```
-- Expected inner code fence:
-```prompt
-context:
-objective:
-steps:
-rules:
-output format:
-example input format:
-example output format:
-```
-"""
+    Pour construire le prompt, il est nécessaire que l’utilisateur fournisse :
+
+    - Intention principale : {main_intention}
+    - Lecteur visé : {target_audience}
+    - Entités clés : {key_entities}
+    - Contexte disponible : {user_context}
+    - Périmètre à inclure : {scope_include}
+    - Périmètre à exclure : {scope_exclude}
+
+    # Format de sortie
+
+    - Format : {output_format}
+    - Contraintes : {constraints}
+            """
