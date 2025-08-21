@@ -4,7 +4,15 @@ from server import mcp
 @mcp.prompt(
     name="Promptologue",
     title="Createur de Prompt",
-    description="Permet de créer un prompt optimisé",
+    description="""
+    Permet de créer un prompt optimisé
+    main_intention: L'objectif principal ou l'intention du prompt à générer.
+    key_entities: Les entités, concepts ou mots-clés principaux à inclure.
+    user_context: Le contexte général fourni par l'utilisateur.
+    scope_include: Les éléments ou sujets qui doivent être inclus dans la réponse.
+    scope_exclude: Les éléments ou sujets qui doivent être exclus de la réponse.
+    output_format: Le format de sortie souhaité pour la réponse du LLM.
+    """,
 )
 def create_prompt(
     main_intention: str,
